@@ -12,11 +12,12 @@ function App() {
   const [isSetupDialogOpen, setIsSetupDialogOpen] = useState<boolean>(false);
 
   const runTest = (setupOptions: SetupOptions) => {
+    setIsSetupDialogOpen(false);
     // doing stuff
   };
 
   return (
-    <div>
+    <div className="app-container">
       <SetupDialog
         isOpen={isSetupDialogOpen}
         tests={tests}
@@ -24,6 +25,10 @@ function App() {
         onClose={() => setIsSetupDialogOpen(false)}
         submitButtonText="Run test"
       />
+
+      <button className="primary-btn" onClick={() => setIsSetupDialogOpen(true)}>
+        Open setup dialog
+      </button>
 
       {/* rest of app */}
     </div>

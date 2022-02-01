@@ -20,33 +20,38 @@ export default function SetupDialog(props: {
   const [userNumber, setUserNumber] = useState<number>(5);
 
   return (
-    <div className="setup-dialog" data-is-open={isOpen}>
-      <select
-        className="select-input"
-        onChange={(e) => setTestId(parseInt(e.target.value))}
-      >
-        {tests.map((test) => (
-          <option value={test.id}>{test.name}</option>
-        ))}
-      </select>
-
-      <input
-        className="num-input"
-        type="number"
-        value={userNumber}
-        onChange={(e) => setUserNumber(parseInt(e.target.value))}
-      />
-
-      <div className="dialog-actions">
-        <button className="secondary-btn" onClick={onClose}>
-          cancel
-        </button>
-        <button
-          className="primary-btn"
-          onClick={() => onSetupSubmit({ testId, userNumber })}
+    <div className="dialog" data-is-open={isOpen}>
+      <div className="setup-dialog">
+        <label htmlFor="testInput">Select test to run</label>
+        <select
+          id="testInput"
+          className="select-input"
+          onChange={(e) => setTestId(parseInt(e.target.value))}
         >
-          {submitButtonText}
-        </button>
+          {tests.map((test) => (
+            <option key={test.id} value={test.id}>
+              {test.name}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor="userNumber">Amount of simulated users</label>
+        <input
+          id="userNumber"
+          className="num-input"
+          type="number"
+          value={userNumber}
+          onChange={(e) => setUserNumber(parseInt(e.target.value))}
+        />
+
+        <div className="dialog-actions">
+          <button className="secondary-btn" onClick={onClose}>
+            cancel
+          </button>
+          <button className="primary-btn" onClick={() => onSetupSubmit({ testId, userNumber })}>
+            {submitButtonText}
+          </button>
+        </div>
       </div>
     </div>
   );
