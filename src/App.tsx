@@ -1,42 +1,56 @@
 import { useState } from "react";
 import "./App.css";
-import SetupDialog, { SetupOptions } from "./setup-dialog";
-
-const tests = [
-  { id: 1, name: "first test" },
-  { id: 2, name: "second test" },
-  { id: 3, name: "third test" },
-];
+import { Suites} from "./constants";
+import SetupDialog, { SelectTestInput, SetupOptions, UserNumberInput } from "./setup-dialog";
 
 function App() {
-  const [isSetupDialogOpen, setIsSetupDialogOpen] = useState<boolean>(false);
-
   const runTest = (setupOptions: SetupOptions) => {
-    setIsSetupDialogOpen(false);
+    setSelectedSuiteId(null);
     // doing stuff
+    console.log('setupOptions: ', setupOptions);
   };
+  
+  const [selectedSuiteId, setSelectedSuiteId] = useState<number | null>(null);
+  const selectedSuite = Suites.find((s) => s.id === selectedSuiteId);
 
   return (
     <div className="app-container">
       <SetupDialog
-        isOpen={isSetupDialogOpen}
-        tests={tests}
+        entity={selectedSuite}
         onSetupSubmit={runTest}
-        onClose={() => setIsSetupDialogOpen(false)}
+        onClose={() => setSelectedSuiteId(null)}
+        formFields={[
+          {module: SelectTestInput, dataSet: selectedSuite?.tests},
+          {module: UserNumberInput}
+        ]}
         submitButtonText="Run test"
       />
 
-      <button className="primary-btn" onClick={() => setIsSetupDialogOpen(true)}>
-        Open setup dialog
-      </button>
+      <div className="run-suites-btns">
+        {Suites.map((suite) => (
+          <button
+            key={suite.id}
+            className="primary-btn"
+            onClick={() => setSelectedSuiteId(suite.id)}
+          >
+            open test setup for {suite.name}
+          </button>
+        ))}
+      </div>
 
       {/* rest of app */}
     </div>
   );
+
 }
 
 export default App;
 
+export interface Suite {
+  id: number;
+  name: string;
+  tests: Test[];
+}
 export interface Test {
   id: number;
   name: string;
